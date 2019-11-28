@@ -1,6 +1,6 @@
-import signup from "./signup";
-import welcome from "./welcome";
+import getMarkets from "./getMarkets";
+import getProducts from "./getProducts";
 export default [
-    signup,
-    welcome
+    getMarkets,
+    getProducts
 ]

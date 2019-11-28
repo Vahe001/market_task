@@ -1,12 +1,25 @@
+import sequalize from 'sequelize'
+
 export default {
-    schemaName: 'market',
+    schemaName: 'products',
     schema: {
-        productName: 'String',
-        type: 'String',
-        size: 'Number',
-        price: 'Number',
-        quantity: 'Number',
-        color: 'Number',
+        name: sequalize.STRING,
+        type: sequalize.STRING,
+        size: sequalize.INTEGER,
+        price: sequalize.INTEGER,
+        quantity: sequalize.INTEGER,
+        color: sequalize.STRING,
+        marketId: {
+            type: sequalize.INTEGER,
+            references: {
+                model: {
+                    tableName: "markets",
+                    schema: global.MARKETS
+                },
+                key: "id"
+            },
+            allowNull: false
+        }
     }
 
 }

@@ -1,13 +1,19 @@
-import mongoose from 'mongoose';
-import schemas from './schemas';
-import _ from 'lodash'
+import Sequelize from 'sequelize';
+import market from "./market";
+import product from "./products";
 
 export default async function () {
-     await mongoose.connect(process.env.DB, {useNewUrlParser: true});
-     _.each(schemas, schema => {
-             let scma = new mongoose.Schema(schema.schema);
-         global[schema.schemaName] = mongoose.model(schema.schemaName, scma)
-     });
-    // let newUser = new global.users({username: 'Vahe001'})
-    // await newUser.save()
+    try {
+        const sequelize = new Sequelize(process.env.DB);
+        global.MARKETS = sequelize.define(market.schemaName, market.schema, { freezeTableName: true });
+        await global.MARKETS.sync({});
+        global.PRODUCTS = sequelize.define(product.schemaName, product.schema, { freezeTableName: true });
+        await global.PRODUCTS.sync({});
+
+        global.MARKETS.hasMany( global.PRODUCTS, {as : 'product' });
+        global.PRODUCTS.belongsTo(global.MARKETS)
+
+    } catch (err) {
+        console.error(err)
+    }
 }

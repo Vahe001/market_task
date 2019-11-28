@@ -1,12 +1,9 @@
 
-async function signup (req, res) {
+async function getMarkets (req, res) {
     try {
-        const { username, role } = req.body;
-        console.log('---------', req.body)
-        let newUser = new global.users({ username, role })
-        newUser.save();
-        console.log('newUser - ', newUser);
-        res.send(newUser);
+        const { offset = 0, limit = 20 } = req.query;
+        let markets = await global.MARKETS.findAll({ raw: true, offset, limit });
+        res.send(markets);
     } catch (e) {
         console.error(e)
     }
@@ -15,7 +12,7 @@ async function signup (req, res) {
 
 
 export default {
-    method: 'post',
-    route: '/signup',
-    handler: signup
+    method: 'get',
+    route: '/getMarkets',
+    handler: getMarkets
 }

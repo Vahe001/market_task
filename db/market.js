@@ -1,7 +1,8 @@
+import sequalize from 'sequelize'
 export default {
-    schemaName: 'market',
+    schemaName: 'markets',
     schema: {
-        name: { type: 'String', unique: true},
+        name: { type: sequalize.STRING, unique: true},
     }
 
 }

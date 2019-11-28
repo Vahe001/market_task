@@ -4,6 +4,5 @@ import Handlers from './handlers'
 export default async function (app) {
     _.each(Handlers, handler => {
         app[handler.method](handler.route, handler.handler);
-        // app.post(handler.route, handler.handler)
     })
 }

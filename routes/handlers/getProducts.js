@@ -1,12 +1,21 @@
 
-async function getMarkets (req, res) {
+async function getProducts (req, res) {
     try {
-        const { username, role } = req.body;
-        console.log('---------', req.body)
-        let newUser = new global.users({ username, role })
-        newUser.save();
-        console.log('newUser - ', newUser);
-        res.send(newUser);
+        const { offset = 0, limit = 20, marketId } = req.query;
+        let where;
+        if(marketId)
+            where = { id: marketId }
+        let products = await global.PRODUCTS.findAll({
+            raw: true,
+            include: [{
+                model: global.MARKETS,
+                as: 'market',
+                where,
+                required: true
+            }],
+            offset,
+            limit});
+        res.send(products);
     } catch (e) {
         console.error(e)
     }
@@ -15,7 +24,7 @@ async function getMarkets (req, res) {
 
 
 export default {
-    method: 'post',
-    route: '/getMarkets',
-    handler: getMarkets
+    method: 'get',
+    route: '/getProducts',
+    handler: getProducts
 }

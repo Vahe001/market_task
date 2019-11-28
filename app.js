@@ -3,7 +3,6 @@ import bodyParser from 'body-parser'
 import initializeRoutes from './routes/index';
 import dotenv from 'dotenv';
 import initializeDb from './db'
-import socket from './socket'
 import cors from 'cors'
 
 dotenv.config();
@@ -16,13 +15,8 @@ app.use(bodyParser.json({
 
 (async () => {
     await initializeDb();
-    await initializeRoutes(app);
-    var http = require( "http" ).createServer( app );
-
-    await socket(http);
-    // let users = await global.users.find({});
-    // console.log('users - ', users)
-    http.listen(process.env.PORT)
+    await initializeRoutes(app)
+    app.listen(process.env.PORT, () => console.log('listening on port ', process.env.PORT))
 
 })();
 
